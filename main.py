@@ -6,10 +6,11 @@ from prometheus_client import start_http_server
 from prometheus_client.core import CollectorRegistry, GaugeMetricFamily
 from prometheus_client.registry import Collector
 
-REDIS_URL = int(os.environ.get("REDIS_URL", "redis://localhost"))
+REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost")
 METRICS_PORT = int(os.environ.get("METRICS_PORT", 9090))
 
 r = redis.from_url(REDIS_URL)
+
 
 class CustomCollector(Collector):
     def collect(self):

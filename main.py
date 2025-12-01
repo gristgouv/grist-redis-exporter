@@ -9,7 +9,7 @@ from prometheus_client.registry import Collector
 REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost")
 METRICS_PORT = int(os.environ.get("METRICS_PORT", 9090))
 
-r = redis.from_url(REDIS_URL)
+r = redis.from_url(REDIS_URL, decode_responses=True)
 
 
 class CustomCollector(Collector):

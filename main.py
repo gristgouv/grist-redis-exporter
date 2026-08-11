@@ -22,12 +22,15 @@ class CustomCollector(Collector):
 
         keys = r.keys("doc-*")
         for key in keys:
-            if key.endswith("-checksum"):
-                continue
-            data = r.hgetall(key)
-            doc_wk_ip = json.loads(data["docWorker"])["id"].replace("-", ".")
-            doc_id = key.removeprefix("doc-")
-            doc_metrics.add_metric([doc_wk_ip, doc_id], 1)
+            try:
+                if key.endswith("-checksum"):
+                    continue
+                data = r.hgetall(key)
+                doc_wk_ip = json.loads(data["docWorker"])["id"].replace("-", ".")
+                doc_id = key.removeprefix("doc-")
+                doc_metrics.add_metric([doc_wk_ip, doc_id], 1)
+            except Exception as e:
+                print(f"Issue with key: {key!r}: {type(e).__name__}: {e}")
 
         yield doc_metrics
 
